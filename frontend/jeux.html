@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Jeux - Games on Web</title>
+        <link rel="stylesheet" href="./css/index.css">
+        <link rel="stylesheet" href="./css/jeux.css">
+
+        <!-- Police Orbitron de Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+
+        <!-- Font Awesome pour les icônes -->
+        <script src="https://kit.fontawesome.com/15bf379fc1.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <!-- Taches bleues flottantes -->
+        <div class="blue-glow-1"></div>
+        <div class="blue-glow-2"></div>
+        <div class="blue-glow-3"></div>
+        <div class="blue-glow-4"></div>
+        <div class="blue-glow-5"></div>
+        
+        <header>
+            <div class="wrapper-left">
+                <button class="logout-btn" id="logout-btn" onclick="handleLogout()" style="display: none;">
+                    <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+                </button>
+                <div class="fantom-logo" id="fantom-logo"></div>
+            </div>
+            <h1>Games on Web <span class="colored-title">2026</span></h1>
+            <div class="wrapper-right">
+                <div class="avatar" id="user-avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="coming-soon-container">
+                <div class="game-info">
+                    <div class="game-icon">
+                        <i class="fa-solid fa-gamepad"></i>
+                    </div>
+                    <h1 class="game-title" id="game-title">Chargement...</h1>
+                    <div class="coming-soon-badge">
+                        <span class="badge-text">Coming Soon</span>
+                    </div>
+                    <p class="coming-soon-message">
+                        Ce jeu sera bientôt disponible !<br>
+                        Restez connecté pour ne pas manquer son lancement.
+                    </p>
+                    <div class="action-buttons">
+                        <button class="btn-primary" onclick="window.location.href='index.html'">
+                            <i class="fa-solid fa-home"></i> Retour à l'accueil
+                        </button>
+                        <button class="btn-secondary" onclick="notify()">
+                            <i class="fa-solid fa-bell"></i> Me notifier
+                        </button>
+                    </div>
+                </div>
+                <div class="decoration-line"></div>
+            </div>
+        </main>
+
+        <script src="./js/auth.js"></script>
+        <script src="./js/jeux.js"></script>
+    </body>
+</html>

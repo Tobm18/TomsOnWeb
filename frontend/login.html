@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Connexion - Games on Web</title>
+        <link rel="stylesheet" href="./css/index.css">
+        <link rel="stylesheet" href="./css/login.css">
+
+        <!-- Police Orbitron de Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+
+        <!-- Font Awesome pour les icônes -->
+        <script src="https://kit.fontawesome.com/15bf379fc1.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <!-- Taches bleues flottantes -->
+        <div class="blue-glow-1"></div>
+        <div class="blue-glow-2"></div>
+        <div class="blue-glow-3"></div>
+        <div class="blue-glow-4"></div>
+        <div class="blue-glow-5"></div>
+        
+        <header>
+            <div class="wrapper-left">
+                <button class="logout-btn" id="logout-btn" onclick="handleLogout()" style="display: none;">
+                    <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+                </button>
+                <div class="fantom-logo" id="fantom-logo"></div>
+            </div>
+            <h1>Games on Web <span class="colored-title">2026</span></h1>
+            <div class="wrapper-right">
+                <div class="avatar" id="user-avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <div class="login-container">
+                <div class="login-card">
+                    <h2 class="login-title">Bienvenue sur <span class="colored-title">Games on Web</span></h2>
+                    
+                    <!-- Système d'onglets -->
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="login" onclick="switchTab('login')">
+                            <i class="fa-solid fa-right-to-bracket"></i> Connexion
+                        </button>
+                        <button class="tab-btn" data-tab="register" onclick="switchTab('register')">
+                            <i class="fa-solid fa-user-plus"></i> Inscription
+                        </button>
+                    </div>
+
+                    <!-- Formulaire de connexion -->
+                    <form id="login-form" class="auth-form active" onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label for="login-email">
+                                <i class="fa-solid fa-envelope"></i> Adresse email
+                            </label>
+                            <input 
+                                type="email" 
+                                id="login-email" 
+                                name="email" 
+                                placeholder="Entrez votre adresse email" 
+                                required
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">
+                                <i class="fa-solid fa-lock"></i> Mot de passe
+                            </label>
+                            <input 
+                                type="password" 
+                                id="login-password" 
+                                name="password" 
+                                placeholder="Entrez votre mot de passe" 
+                                required
+                            >
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fa-solid fa-right-to-bracket"></i> Se connecter
+                        </button>
+                    </form>
+
+                    <!-- Formulaire d'inscription -->
+                    <form id="register-form" class="auth-form" onsubmit="handleRegister(event)">
+                        <div class="form-group">
+                            <label for="register-username">
+                                <i class="fa-solid fa-user"></i> Nom d'utilisateur
+                            </label>
+                            <input 
+                                type="text" 
+                                id="register-username" 
+                                name="username" 
+                                placeholder="Choisissez un nom d'utilisateur" 
+                                required
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="register-email">
+                                <i class="fa-solid fa-envelope"></i> Adresse email
+                            </label>
+                            <input 
+                                type="email" 
+                                id="register-email" 
+                                name="email" 
+                                placeholder="Entrez votre adresse email" 
+                                required
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password">
+                                <i class="fa-solid fa-lock"></i> Mot de passe
+                            </label>
+                            <input 
+                                type="password" 
+                                id="register-password" 
+                                name="password" 
+                                placeholder="Choisissez un mot de passe" 
+                                required
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password-confirm">
+                                <i class="fa-solid fa-lock"></i> Confirmer le mot de passe
+                            </label>
+                            <input 
+                                type="password" 
+                                id="register-password-confirm" 
+                                name="password-confirm" 
+                                placeholder="Confirmez votre mot de passe" 
+                                required
+                            >
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fa-solid fa-user-plus"></i> S'inscrire
+                        </button>
+                    </form>
+
+                    <!-- Message de retour -->
+                    <div id="message" class="message"></div>
+                </div>
+            </div>
+        </main>
+
+        <script src="./js/auth.js"></script>
+        <script src="./js/login.js"></script>
+    </body>
+</html>

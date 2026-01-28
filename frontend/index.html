@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Games on Web</title>
+        <link rel="stylesheet" href="./css/index.css">
+
+        <!-- Police Orbitron de Google Fonts -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+
+        <!-- Font Awesome pour les icônes -->
+        <script src="https://kit.fontawesome.com/15bf379fc1.js" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <!-- Taches bleues flottantes -->
+        <div class="blue-glow-1"></div>
+        <div class="blue-glow-2"></div>
+        <div class="blue-glow-3"></div>
+        <div class="blue-glow-4"></div>
+        <div class="blue-glow-5"></div>
+        
+        <header>
+            <div class="wrapper-left">
+                <button class="logout-btn" id="logout-btn" onclick="handleLogout()" style="display: none;">
+                    <i class="fa-solid fa-right-from-bracket"></i> Déconnexion
+                </button>
+                <div class="fantom-logo" id="fantom-logo"></div>
+            </div>
+            <h1>Games on Web <span class="colored-title">2026</span></h1>
+            <div class="wrapper-right">
+                <div class="avatar" id="user-avatar">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="introduction">
+                <div class="welcome-content">
+                    <h2 class="welcome-title">Bienvenue à Games on Web</h2>
+                    <h1 class="welcome-year">2026</h1>
+                    <p class="welcome-subtitle">Découvrez les trois jeux de Tom BALLESTER pour l'édition de cette année.</p>
+                </div>
+                <div class="scroll-indicator" onclick="scrollToGames()">
+                    <div class="arrow-down">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                    <p class="scroll-text">Découvrir les jeux</p>
+                </div>
+            </section>
+            <section class="games" id="games-section">
+                <h2>Les jeux de cette année</h2>
+                <div class="carousel-container">
+                    <button class="carousel-btn prev-btn" onclick="rotateCarousel(-1)"><i class="fa-solid fa-arrow-left"></i></button>
+                    <div class="carousel-wrapper">
+                        <div class="carousel">
+                            <div class="game-card active" style="--card-index: 0;">
+                                <div class="game-card-background" style="background-image: url('assets/cyberquest.jpg');"></div>
+                                <div class="game-card-content">
+                                    <div class="game-score">Meilleur Score: <span>15,420</span></div>
+                                    <h3>CyberQuest</h3>
+                                    <p>Plongez dans un univers futuriste rempli d'aventures et de défis.</p>
+                                    <button class="play-btn" onclick="handlePlayClick('cyberquest')">Jouer</button>
+                                </div>
+                            </div>
+                            <div class="game-card" style="--card-index: 1;">
+                                <div class="game-card-background" style="background-image: url('assets/fantasy.jpg');"></div>
+                                <div class="game-card-content">
+                                    <div class="game-score">Meilleur Score: <span>23,890</span></div>
+                                    <h3>Fantasy Realm</h3>
+                                    <p>Explorez des royaumes magiques et combattez des créatures légendaires.</p>
+                                    <button class="play-btn" onclick="handlePlayClick('fantasy')">Jouer</button>
+                                </div>
+                            </div>
+                            <div class="game-card" style="--card-index: 2;">
+                                <div class="game-card-background" style="background-image: url('assets/space.jpg');"></div>
+                                <div class="game-card-content">
+                                    <div class="game-score">Meilleur Score: <span>31,200</span></div>
+                                    <h3>Space Odyssey</h3>
+                                    <p>Partez à la conquête de l'espace et découvrez de nouvelles planètes.</p>
+                                    <button class="play-btn" onclick="handlePlayClick('space')">Jouer</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-btn next-btn" onclick="rotateCarousel(1)"><i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2026 Games on Web. Tous droits réservés.</p>
+        </footer>
+        <script src="./js/auth.js"></script>
+        <script src="./js/index.js"></script>
+    </body>
+</html>
