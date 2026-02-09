@@ -31,6 +31,9 @@ header {
 header.header-hidden {
     transform: translateY(-100%);
 }
+.header-title {
+    cursor: pointer;
+}
 .wrapper-left,
 .wrapper-right {
     display: flex;

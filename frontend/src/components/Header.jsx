@@ -80,7 +80,7 @@ export default function Header() {
         </button>
         <div className="fantom-logo" id="fantom-logo" style={{display: user ? 'none' : 'block'}}></div>
       </div>
-      <h1>Games on Web <span className="colored-title">2026</span></h1>
+      <h1 className='header-title' onClick={() => navigate( "/")}>Games on Web <span className="colored-title">2026</span></h1>
       <div className="wrapper-right">
         <div
           className="avatar"

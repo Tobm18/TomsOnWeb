@@ -53,6 +53,10 @@ export default function Login() {
     } catch (err) {
       if (err.message === 'Email already in use') {
         setError('Cette adresse email est déjà utilisée.')
+      } else if (err.message === 'Username already in use') {
+        setError('Ce nom d\'utilisateur est déjà utilisé.')
+      } else if (err.message === 'Username must be at most 20 characters') {
+        setError('Le nom d\'utilisateur doit contenir au maximum 20 caractères.')
       } else {
         setError('Une erreur est survenue lors de l\'inscription.')
       }
@@ -110,7 +114,7 @@ export default function Login() {
             <form className={`auth-form ${activeTab === 'register' ? 'active' : ''}`} onSubmit={handleRegister}>
               <div className="form-group">
                 <label><i className="fa-solid fa-user"></i> Nom d'utilisateur</label>
-                <input value={username} onChange={e => setUsername(e.target.value)} type="text" placeholder="Choisissez un nom d'utilisateur" required />
+                <input value={username} onChange={e => setUsername(e.target.value)} type="text" placeholder="Choisissez un nom d'utilisateur" required maxLength={20} />
               </div>
               <div className="form-group">
                 <label><i className="fa-solid fa-envelope"></i> Adresse email</label>

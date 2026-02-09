@@ -94,7 +94,7 @@ export default function Game() {
                 <div className='score-item-separator'></div>
                 <div className="score-item">
                   <span className="score-item-title">Ton Record:</span>
-                  <span style={{ color: '#00aaff' }}>{gameScores.personalScore ? `${gameScores.personalScore.score} pts` : '0 pts'}</span>
+                  <span>{gameScores.personalScore ? `${gameScores.personalScore.score} pts` : '0 pts'}</span>
                 </div>
               </div>
             </div>
