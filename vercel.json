@@ -10,7 +10,12 @@
     ],
     "routes": [
         { "src": "/api/(.*)", "dest": "/backend/api/$1.js" },
+        { "src": "/assets/(.*)", "dest": "/frontend/assets/$1" },
+        { "src": "/games/(.*)", "dest": "/frontend/games/$1" },
+        { "src": "/images/(.*)", "dest": "/frontend/images/$1" },
+        { "src": "/css/(.*)", "dest": "/frontend/css/$1" },
+
         { "handle": "filesystem" },
-        { "src": "/(.*)", "dest": "/index.html" }
+        { "src": "/(.*)", "dest": "/frontend/index.html" }
     ]
 }
