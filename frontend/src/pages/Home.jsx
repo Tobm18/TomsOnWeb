@@ -1,18 +1,19 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { useScores } from '../context/ScoreContext'
 import Spinner from '../components/Spinner'
 
 export default function Home() {
   const navigate = useNavigate()
-  const { user, loading: authLoading } = useAuth()
-  const [loading, setLoading] = useState(false)
+  const { user } = useAuth()
+  const { scores: allScores, loading: scoresLoading } = useScores()
   const [currentCard, setCurrentCard] = useState(0)
 
   const games = [
-    { id: 'keep-it-alive', title: 'Keep It Alive', description: "Survivez le plus longtemps possible dans ce jeu d'adresse frénétique.", score: '0', img: '/images/keep-it-alive.png' },
-    { id: 'fantasy', title: 'Fantasy Realm', description: 'Explorez des royaumes magiques et combattez des créatures légendaires.', score: '23,890', img: '/assets/fantasy.jpg' },
-    { id: 'space', title: 'Space Odyssey', description: 'Partez à la conquête de l\'espace et découvrez de nouvelles planètes.', score: '31,200', img: '/assets/space.jpg' }
+    { id: 'keep-it-alive', title: 'Keep It Alive', description: "Survivez le plus longtemps possible, mais attention aux obstacles !", img: '/images/keep-it-alive.png' },
+    { id: 'fantasy', title: 'Fantasy Realm', description: 'Explorez des royaumes magiques et combattez des créatures légendaires.', img: '/assets/fantasy.jpg' },
+    { id: 'space', title: 'Space Odyssey', description: 'Partez à la conquête de l\'espace et découvrez de nouvelles planètes.', img: '/assets/space.jpg' }
   ]
 
   const rotateCarousel = (direction) => {
@@ -60,6 +61,11 @@ export default function Home() {
               <div className="carousel">
                 {games.map((game, index) => {
                   const position = (index - currentCard + games.length) % games.length
+                  const gameData = allScores[game.id] || { topScore: null, personalScore: null };
+                  const { topScore, personalScore } = gameData;
+                  const isPlayerTop = user && topScore && personalScore && topScore.playerName === user.username;
+                  const showPersonal = user && personalScore && !isPlayerTop;
+
                    return (
                     <div
                       key={game.id}
@@ -68,7 +74,20 @@ export default function Home() {
                     >
                       <div className="game-card-background" style={{ backgroundImage: `url('${game.img}')` }}></div>
                       <div className="game-card-content">
-                        <div className="game-score">Meilleur Score: <span>{game.score}</span></div>
+                        <div className="game-score">
+                          <div className="top-score-info">
+                            Meilleur joueur : {topScore ? (
+                              <span>{topScore.playerName} <span className="score-link">{topScore.score} pts</span></span>
+                            ) : (
+                              <span>Aucun score</span>
+                            )}
+                          </div>
+                          {showPersonal && (
+                            <div className="personal-score-link">
+                              Ton record : <span>{personalScore.score} pts</span>
+                            </div>
+                          )}
+                        </div>
                         <h3>{game.title}</h3>
                         <p>{game.description}</p>
                         <button className="play-btn" onClick={() => handlePlayClick(game.id)}>Jouer</button>
@@ -84,7 +103,7 @@ export default function Home() {
             </button>
           </div>
         </section>
-        <Spinner show={loading} />
+        <Spinner show={scoresLoading} />
       </main>
     </div>
   )

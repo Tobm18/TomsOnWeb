@@ -1,21 +1,40 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
+import { useScores } from '../context/ScoreContext'
 
 export default function Game() {
   const navigate = useNavigate()
   const { user, loading } = useAuth()
+  const { scores, updateScore } = useScores()
   const gameContainerRef = useRef(null)
   const [isFullscreen, setIsFullscreen] = useState(false)
+
+  const selectedGame = localStorage.getItem('selectedGame')
+  const gameScores = scores[selectedGame] || { topScore: null, personalScore: null }
 
   useEffect(() => {
     const handleFullscreenChange = () => {
       setIsFullscreen(!!document.fullscreenElement)
     }
 
+    const handleMessage = async (event) => {
+      if (event.data.type === 'GAME_OVER') {
+        const { score } = event.data
+        if (selectedGame) {
+          updateScore(selectedGame, score)
+        }
+      }
+    }
+
     document.addEventListener('fullscreenchange', handleFullscreenChange)
-    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange)
-  }, [])
+    window.addEventListener('message', handleMessage)
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange)
+      window.removeEventListener('message', handleMessage)
+    }
+  }, [user, selectedGame, updateScore])
 
   useEffect(() => {
     if (loading) return
@@ -43,7 +62,6 @@ export default function Game() {
     }
   }
 
-  const selectedGame = localStorage.getItem('selectedGame')
   const gameNames = { 'keep-it-alive': 'Keep It Alive', fantasy: 'Fantasy Realm', space: 'Space Odyssey' }
 
   return (
@@ -56,30 +74,35 @@ export default function Game() {
 
       <main style={{ height: selectedGame === 'keep-it-alive' ? '85vh' : 'auto' }}>
         {selectedGame === 'keep-it-alive' ? (
-          <div className="keep-it-alive-wrapper" style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
-            <div className="game-controls" style={{ padding: '0 2vw 10px 2vw', display: 'flex', gap: '15px' }}>
-              <button className="control-btn" onClick={() => navigate('/')}>
-                <i className="fa-solid fa-arrow-left"></i> Retour à l'accueil
-              </button>
-              <button className="control-btn" onClick={toggleFullscreen}>
-                <i className={`fa-solid ${isFullscreen ? 'fa-compress' : 'fa-expand'}`}></i>
-                {isFullscreen ? 'Quitter le plein écran' : 'Plein écran'}
-              </button>
+          <div className="keep-it-alive-wrapper">
+            <div className="game-controls">
+              <div className="game-controls-btns">
+                <button className="control-btn" onClick={() => navigate('/')}>
+                  <i className="fa-solid fa-arrow-left"></i> Retour à l'accueil
+                </button>
+                <button className="control-btn" onClick={toggleFullscreen}>
+                  <i className={`fa-solid ${isFullscreen ? 'fa-compress' : 'fa-expand'}`}></i>
+                  {isFullscreen ? 'Quitter le plein écran' : 'Plein écran'}
+                </button>
+              </div>
+              
+              <div className="game-status-scores">
+                <div className="score-item">
+                  <span className="score-item-title">Meilleur score :</span>
+                  <span>{gameScores.topScore ? `${gameScores.topScore.score} pts (${gameScores.topScore.playerName})` : 'Aucun'}</span>
+                </div>
+                <div className='score-item-separator'></div>
+                <div className="score-item">
+                  <span className="score-item-title">Ton Record:</span>
+                  <span style={{ color: '#00aaff' }}>{gameScores.personalScore ? `${gameScores.personalScore.score} pts` : '0 pts'}</span>
+                </div>
+              </div>
             </div>
-            <div className="keep-it-alive-frame-container" ref={gameContainerRef} style={{ flex: 1, padding: '0 2vw 2vw 2vw', position: 'relative' }}>
+            <div className="keep-it-alive-frame-container" ref={gameContainerRef}>
               <iframe 
                 src="/games/keep-it-alive/index.html" 
                 title="Keep It Alive"
                 allow="fullscreen"
-                style={{ 
-                  width: '100%', 
-                  height: '100%', 
-                  border: '2px solid rgba(0, 170, 255, 0.5)', 
-                  borderRadius: '15px',
-                  background: '#000',
-                  boxShadow: '0 0 30px rgba(0, 170, 255, 0.2)',
-                  display: 'block'
-                }}
               />
             </div>
           </div>

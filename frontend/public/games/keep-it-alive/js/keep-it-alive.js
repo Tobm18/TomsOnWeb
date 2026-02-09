@@ -915,7 +915,15 @@ function gameOver() {
     
     document.getElementById('powerupLegend').classList.add('hidden');
     
-    finalScoreElement.textContent = Math.floor(score);
+    const finalScore = Math.floor(score);
+    finalScoreElement.textContent = finalScore;
+
+    // Send score to the parent application
+    window.parent.postMessage({ 
+        type: 'GAME_OVER', 
+        score: finalScore 
+    }, '*');
+
     if (survivalMessageElement) {
         survivalMessageElement.textContent = `Tu as survécu ${difficulty.currentTime.toFixed(1)}s`;
     }

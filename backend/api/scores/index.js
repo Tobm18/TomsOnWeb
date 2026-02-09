@@ -6,13 +6,32 @@ module.exports = async (req, res) => {
     await connectToDatabase();
 
     if (req.method === 'GET') {
-      const scores = await Score.find().sort({ score: -1 }).limit(10);
+      const scores = await Score.find().sort({ score: -1 }).lean();
       return res.status(200).json(scores);
     }
 
     if (req.method === 'POST') {
-      const doc = await Score.create(req.body);
-      return res.status(201).json(doc);
+      const { game, playerName, score } = req.body;
+      
+      if (!game || !playerName || score === undefined) {
+        return res.status(400).json({ message: 'Missing required fields' });
+      }
+
+      // Find existing score for this player in this game
+      let existingScore = await Score.findOne({ game, playerName });
+
+      if (existingScore) {
+        // Update only if new score is higher
+        if (score > existingScore.score) {
+          existingScore.score = score;
+          await existingScore.save();
+        }
+        return res.status(200).json(existingScore);
+      } else {
+        // Create new entry
+        const doc = await Score.create({ game, playerName, score });
+        return res.status(201).json(doc);
+      }
     }
 
     res.setHeader('Allow', 'GET,POST');

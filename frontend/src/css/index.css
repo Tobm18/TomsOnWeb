@@ -509,21 +509,47 @@ footer {
     position: absolute;
     top: 20px;
     right: 20px;
-    font-size: 0.75rem;
-    color: #0f8;
-    font-weight: 700;
-    text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
-    background: rgba(0, 0, 0, 0.7);
-    padding: 8px 12px;
-    border-radius: 10px;
-    border: 1px solid rgba(0, 255, 136, 0.3);
-    backdrop-filter: blur(5px);
+    font-size: 0.8rem;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.75);
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 170, 255, 0.4);
+    backdrop-filter: blur(8px);
     text-align: right;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    z-index: 10;
 }
-.home-page .game-score span {
-    font-size: 1rem;
+.home-page .top-score-info {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+}
+.home-page .top-score-info span {
     display: block;
-    margin-top: 3px;
+    color: #0f8;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.4);
+    margin-top: 2px;
+}
+.home-page .top-score-info span.score-link {
+    color: #0af;
+    text-shadow: 0 0 10px rgba(0, 170, 255, 0.4);
+    display: inline-block;
+}
+.home-page .personal-score-link {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.75rem;
+}
+.home-page .personal-score-link span {
+    color: #0af;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: inline-block;
+    margin-left: 5px;
 }
 .home-page .play-btn {
     background: linear-gradient(135deg, #0af, #04f);
@@ -852,6 +878,16 @@ footer {
 /* Game Controls */
 .game-controls {
     z-index: 10;
+    padding: 0 2vw 10px 2vw;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.game-controls-btns {
+    display: flex;
+    gap: 15px;
 }
 
 .control-btn {
@@ -880,6 +916,42 @@ footer {
     font-size: 0.9rem;
 }
 
+.game-status-scores {
+    display: flex;
+    gap: 20px; 
+    background: rgba(0, 170, 255, 0.1); 
+    padding: 10px 20px; 
+    border-radius: 10px;
+    border: 1px solid rgba(0, 170, 255, 0.2);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.score-item-title {
+    color: rgba(0, 170, 255, 0.7);
+    margin-right: 8px;
+}
+
+.score-item-separator {
+    width: 1px; 
+    background: rgba(0, 170, 255, 0.2);
+}
+
+.keep-it-alive-frame-container {
+    flex: 1; 
+    padding: 0 2vw 2vw 2vw;
+    position: relative; 
+}
+.keep-it-alive-frame-container iframe {
+    width: 100%; 
+    height: 100%; 
+    border: 2px solid rgba(0, 170, 255, 0.5);
+    border-radius: 15px;
+    background: #000;
+    box-shadow: 0 0 30px rgba(0, 170, 255, 0.2);
+    display: block;
+}
 
 /* Fullscreen overrides */
 .keep-it-alive-frame-container:fullscreen {
@@ -897,4 +969,9 @@ footer {
     border-radius: 0 !important;
     box-shadow: none !important;
 }
-
+.keep-it-alive-wrapper {
+    width: 100%; 
+    height: 100%; 
+    display: flex; 
+    flex-direction: column;
+}
