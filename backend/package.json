@@ -1,14 +1,17 @@
 {
-  "name": "gamesonweb-backend",
+  "name": "tomsonweb-backend",
   "version": "1.0.0",
   "author": "ToBm18",
   "scripts": {
     "develop": "vercel dev --listen 3001 --yes"
   },
   "dependencies": {
-    "dotenv": "^17.2.3",
     "bcrypt": "^5.1.0",
+    "dotenv": "^17.2.3",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^9.1.5"
+  },
+  "devDependencies": {
+    "vercel": "^51.4.0"
   }
 }

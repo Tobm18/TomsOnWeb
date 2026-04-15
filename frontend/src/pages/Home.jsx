@@ -66,7 +66,7 @@ export default function Home() {
                   const isPlayerTop = user && topScore && personalScore && topScore.playerName === user.username;
                   const showPersonal = user && personalScore && !isPlayerTop;
 
-                   return (
+                  return (
                     <div
                       key={game.id}
                       className={`game-card ${position === 0 ? 'active' : ''}`}
