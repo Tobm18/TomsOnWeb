@@ -14,7 +14,7 @@ class TileManager {
     [1, 2],
   ];
 
-  constructor(scene) {
+  constructor(scene, powerUpManager) {
     this.scene      = scene;
     this.tiles      = [];
     this.obstacles  = [];
@@ -23,6 +23,7 @@ class TileManager {
 
     this._createMaterials();
     this._spawnInitialTiles();
+    this.powerUpManager = powerUpManager;
   }
 
   _createMaterials() {
@@ -89,6 +90,10 @@ class TileManager {
     if (this.tileIndex > 2) {
       this._spawnObstacles(tileGroup, z);
       this._spawnCoins(tileGroup, z);
+    }
+
+    if (this.powerUpManager) {
+      this.powerUpManager.spawnOn(z, TileManager.LANES);
     }
 
     this.tiles.push(tileGroup);

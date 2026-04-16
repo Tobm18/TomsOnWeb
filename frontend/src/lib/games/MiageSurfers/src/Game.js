@@ -8,6 +8,7 @@
  *   PLAYING   → jeu en cours
  *   GAMEOVER  → collision détectée
  */
+
 class Game {
   static INITIAL_SPEED = 0.15;
   static SPEED_INCREMENT = 0.000035; // accélération progressive par frame
@@ -50,7 +51,8 @@ class Game {
   _initSystems() {
     this.input       = new InputManager();
     this.player      = new Player(this.scene);
-    this.tileManager = new TileManager(this.scene);
+    this.powerUpManager = new PowerUpManager(this.scene);
+    this.tileManager = new TileManager(this.scene, this.powerUpManager);
   }
 
   _initCamera() {
@@ -93,6 +95,7 @@ class Game {
 
       // Mettre à jour les systèmes
       this.tileManager.update(this.speed, this.score);
+      this.powerUpManager.update(this.speed, this.player, this);
       this.tileManager.checkCoins(this.player, (count) => { this.score += count * 50; });
       this.player.update(this.input);
 
@@ -101,8 +104,15 @@ class Game {
       this._updateHUD();
 
       // Vérifier les collisions
-      if (this.tileManager.checkCollision(this.player)) {
+      if (!this.powerUpManager.isActive('shield') &&
+          !this.invincible &&
+          this.tileManager.checkCollision(this.player)) {
         this._triggerGameOver();
+      }
+
+      // Super vitesse : boost temporaire
+      if (this.powerUpManager.isActive('speed')) {
+        this.speed = Math.min(this.speed, Game.INITIAL_SPEED * 2.5);
       }
 
       // Trouve la tuile la plus proche sous le joueur
@@ -114,6 +124,32 @@ class Game {
 
     this.scene.render();
   }
+
+  onPowerUpStart(type) {
+  const icons = { magnet: '🧲', shield: '🛡️', speed: '⚡' };
+  document.getElementById('powerupDisplay').textContent = icons[type];
+  document.getElementById('powerupDisplay').style.opacity = '1';
+
+  if (type === 'speed') {
+    this.speed *= 2;
+    this.scene.clearColor = new BABYLON.Color4(0.15, 0.0, 0.3, 1); // violet
+  }
+  if (type === 'shield') {
+    this.player.mesh.material.emissiveColor = new BABYLON.Color3(0.0, 0.5, 1.0);
+  }
+}
+
+onPowerUpEnd(type) {
+  document.getElementById('powerupDisplay').style.opacity = '0';
+
+  if (type === 'speed') {
+    this.speed = Game.INITIAL_SPEED;
+    this.scene.clearColor = new BABYLON.Color4(0.02, 0.02, 0.05, 1);
+  }
+  if (type === 'shield') {
+    this.player.mesh.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
+  }
+}
 
   // ─────────────────────────────────────────
   // Gestion des états
@@ -131,6 +167,7 @@ class Game {
 
     this.player.reset();
     this.tileManager.reset();
+    this.powerUpManager.reset();
 
     // Remettre l'état PLAYING directement
     this.state = 'PLAYING';

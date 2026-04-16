@@ -20,6 +20,18 @@
       pointer-events: none;
     }
 
+    #powerupDisplay {
+      position: absolute;
+      top: 55px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 36px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      color: #fff;
+      pointer-events: none;
+    }
+
     /* Écran de démarrage */
     #startScreen, #gameoverScreen {
       position: absolute;
@@ -56,6 +68,7 @@
   <canvas id="renderCanvas"></canvas>
 
   <div id="hud">Score : <span id="scoreDisplay">0</span></div>
+  <div id="powerupDisplay"></div>
 
   <div style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);width:200px;">
     <p style="color:#aaa;font-size:12px;text-align:center;margin-bottom:4px;">VITESSE</p>
@@ -82,6 +95,7 @@
   <!-- Nos modules (ordre important) -->
   <script src="src/InputManager.js"></script>
   <script src="src/Player.js"></script>
+  <script src="src/PowerUpManager.js"></script>
   <script src="src/TileManager.js"></script>
   <script src="src/Game.js"></script>
 
