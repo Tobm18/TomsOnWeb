@@ -3,10 +3,13 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Infinite Runner</title>
+<title>Miage Surfers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Boogaloo&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { background: #000; overflow: hidden; font-family: sans-serif; }
+body { background: #000; overflow: hidden; min-height: 100vh; font-family: sans-serif; }
 #renderCanvas { width: 100vw; height: 100vh; display: block; }
 #hud {
   position: absolute;
@@ -37,6 +40,17 @@ body { background: #000; overflow: hidden; font-family: sans-serif; }
   color: #fff;
   gap: 20px;
 }
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.8);
+  color: #fff;
+  z-index: 999;
+}
 #gameoverScreen { display: none; }
 h1 { font-size: 48px; letter-spacing: 4px; }
 h2 { font-size: 36px; }
@@ -52,6 +66,14 @@ button {
   transition: background 0.2s;
 }
 button:hover { background: rgba(255,255,255,0.15); }
+@keyframes trackMove {
+  from { background-position: 0 0; }
+  to   { background-position: 0 60px; }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
 </style>
 </head>
 <body>
@@ -64,15 +86,56 @@ button:hover { background: rgba(255,255,255,0.15); }
     <div id="speedFill" style="height:100%;width:0%;background:#00ffcc;transition:width 0.3s;"></div>
   </div>
 </div>
-<div id="startScreen">
-  <h1>RUNNER</h1>
-  <p>← → pour changer de lane &nbsp;|&nbsp; ↑ ou Espace pour sauter &nbsp;|&nbsp; ↓ pour slider</p>
-  <button id="startBtn">JOUER</button>
-</div>
 <div id="gameoverScreen">
   <h2>GAME OVER</h2>
   <p>Score final : <span id="finalScore">0</span></p>
   <button id="restartBtn">REJOUER</button>
+</div>
+
+<div class="screen" id="startScreen">
+
+  <!-- Piste animée en arrière-plan -->
+  <div style="position:absolute;inset:0;background:repeating-linear-gradient(180deg,transparent 0,transparent 28px,rgba(0,255,204,0.05) 28px,rgba(0,255,204,0.05) 30px);animation:trackMove 1.2s linear infinite;pointer-events:none;"></div>
+
+  <!-- Titre -->
+  <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:10px;">
+    <div style="
+      font-family: 'Boogaloo', cursive;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      filter: drop-shadow(0 8px 0 #035360) drop-shadow(0 12px 30px rgba(0,0,0,0.8));
+    ">
+      <span style="
+        font-size: clamp(60px, 12vw, 110px);
+        line-height: 0.88;
+        background: linear-gradient(180deg, #ffe566 0%, #ffaa00 45%, #ff6600 75%, #cc2200 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        -webkit-text-stroke: 8px #0cb4ce;
+        paint-order: stroke fill;
+        transform: rotate(-2deg) scale(1.05);
+        display: inline-block;
+      ">MIAGE</span>
+      <span style="
+        font-size: clamp(55px, 12vw, 110px);
+        line-height: 0.88;
+        background: linear-gradient(180deg, #ffee44 0%, #ffbb00 40%, #ff5500 80%, #bb1100 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        -webkit-text-stroke: 8px #0cb4ce;
+        paint-order: stroke fill;
+        transform: rotate(1.5deg) scale(1.08);
+        display: inline-block;
+      ">SURFERS</span>
+    </div>
+    <p style="font-size:12px;letter-spacing:3px;color:rgba(255,255,255,0.35);">← → CHANGER DE LANE &nbsp;·&nbsp; ↑ SAUTER &nbsp;·&nbsp; ↓ SLIDER</p>
+  </div>
+
+  <button id="startBtn" style="margin-top:40px;border-color:#00ffcc;color:#00ffcc;font-size:16px;letter-spacing:4px;animation:pulse 1.4s ease-in-out infinite;">
+    JOUER
+  </button>
+
 </div>
 
 <script src="https://cdn.babylonjs.com/babylon.js"></script>

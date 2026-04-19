@@ -5,8 +5,8 @@ import { PowerUpManager } from "./PowerUpManager.js";
 import { TileManager } from "./TileManager.js";
 
 export class Game {
-  static INITIAL_SPEED    = 0.15;
-  static SPEED_INCREMENT  = 0.000035;
+  static INITIAL_SPEED   = 0.45;
+  static SPEED_INCREMENT = 0.00010;
 
   constructor(canvas, { onHudUpdate, onGameOver, onPowerUpChange } = {}) {
     this._onHudUpdate     = onHudUpdate     || (() => {});
