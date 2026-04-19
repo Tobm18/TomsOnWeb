@@ -5,7 +5,7 @@ Tom's on Web est un projet universitaire réalisé dans le cadre du concours Gam
 ## Accès au projet
 
 Le projet est accessible via l'URL suivante :
-[https://toms-on-web.vercel.app/](https://toms-on-web.vercel.app/)
+[Tom's on Web](https://toms-on-web.vercel.app/)
 
 Pour travailler en local pendant le développement :
 
