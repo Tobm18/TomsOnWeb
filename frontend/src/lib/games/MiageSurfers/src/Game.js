@@ -121,17 +121,20 @@ export class Game {
 
       // Caméra suit la hauteur du joueur
       // Caméra suit la hauteur du joueur en douceur
-      const targetCamY = 6 + Math.max(0, this.player.groundY - 1.25);
+      // Caméra suit la hauteur réelle du joueur (pas juste groundY)
+      const playerHeight = this.player.mesh.position.y - 0.75; // position des pieds
+      const targetCamY   = 6 + Math.max(0, playerHeight - 1.25);
       this.camera.position.y = BABYLON.Scalar.Lerp(
         this.camera.position.y,
         targetCamY,
-        0.08
+        0.06  // un peu plus lent pour un effet smooth pendant la montée
       );
 
       // Incrémenter le score
       this.score += Math.round(this.speed * 10);
       this._updateHUD();
 
+<<<<<<< HEAD
       // Vérifier les collisions
       if (
         !this.powerUpManager.isActive("shield") &&
@@ -140,11 +143,35 @@ export class Game {
       ) {
         this._triggerGameOver();
       }
+=======
+      // Chaque coin = 50 points de base + bonus selon la vitesse
+      this.tileManager.checkCoins(this.player, (count) => {
+        const bonus = this.powerUpManager.isActive('jetpack') ? 100 : 50;
+        this.score += count * bonus;
+
+        // Flash visuel sur le score pour feedback
+        const scoreEl = document.getElementById('scoreDisplay');
+        scoreEl.style.color = this.powerUpManager.isActive('jetpack') ? '#ff8800' : '#00ffcc';
+        clearTimeout(this._scoreFlashTimer);
+        this._scoreFlashTimer = setTimeout(() => {
+          scoreEl.style.color = '';
+        }, 200);
+      });
+      
+      // Vérifier les collisions (pas pendant jetpack — le joueur vole au dessus)
+    if (!this.powerUpManager.isActive('shield') &&
+        !this.powerUpManager.isActive('jetpack') &&
+        !this.invincible &&
+        this.tileManager.checkCollision(this.player)) {
+      this._triggerGameOver();
+    }
+>>>>>>> 9c2c7a8 (jetpack feature)
 
       // Super vitesse : boost temporaire
       if (this.powerUpManager.isActive("speed")) {
         this.speed = Math.min(this.speed, Game.INITIAL_SPEED * 2.5);
       }
+<<<<<<< HEAD
 <<<<<<< HEAD
 
       // Trouve la tuile la plus proche sous le joueur
@@ -154,6 +181,9 @@ export class Game {
       }
 =======
 >>>>>>> c40e69e (walk on trains feature)
+=======
+
+>>>>>>> 9c2c7a8 (jetpack feature)
     }
 
     this.scene.render();
