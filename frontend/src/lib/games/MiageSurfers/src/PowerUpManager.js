@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import * as BABYLON from "babylonjs";
 
 export class PowerUpManager {
@@ -7,6 +8,15 @@ export class PowerUpManager {
     magnet: new BABYLON.Color3(1.0, 0.85, 0.0), // doré
     shield: new BABYLON.Color3(0.0, 0.8, 1.0), // cyan
     speed: new BABYLON.Color3(0.6, 0.0, 1.0), // violet
+=======
+class PowerUpManager {
+  static TYPES    = ['magnet', 'shield', 'speed'];
+  static DURATION = { magnet: 8000, shield: 5000, speed: 4000 };
+  static COLORS   = {
+    magnet: new BABYLON.Color3(1.0, 0.85, 0.0),
+    shield: new BABYLON.Color3(0.0, 0.8,  1.0),
+    speed:  new BABYLON.Color3(0.6, 0.0,  1.0),
+>>>>>>> c40e69e (walk on trains feature)
   };
   static EMISSIVE = {
     magnet: new BABYLON.Color3(0.4, 0.3, 0.0),
@@ -15,10 +25,17 @@ export class PowerUpManager {
   };
 
   constructor(scene) {
+<<<<<<< HEAD
     this.scene = scene;
     this.spawned = []; // { mesh, type }
     this.active = {}; // { magnet: false, shield: false, speed: false }
     this.timers = {};
+=======
+    this.scene   = scene;
+    this.spawned = [];
+    this.active  = { magnet: false, shield: false, speed: false };
+    this.timers  = {};
+>>>>>>> c40e69e (walk on trains feature)
     this._createMaterials();
   }
 
@@ -32,17 +49,20 @@ export class PowerUpManager {
     }
   }
 
-  // Appelé par TileManager pour spawner un power-up sur une tuile
   spawnOn(z, lanes) {
+<<<<<<< HEAD
     if (Math.random() > 0.25) return; // 25% de chance par tuile
 
     const type =
       PowerUpManager.TYPES[
         Math.floor(Math.random() * PowerUpManager.TYPES.length)
       ];
+=======
+    if (Math.random() > 0.25) return;
+    const type = PowerUpManager.TYPES[Math.floor(Math.random() * PowerUpManager.TYPES.length)];
+>>>>>>> c40e69e (walk on trains feature)
     const lane = lanes[Math.floor(Math.random() * lanes.length)];
 
-    // Forme différente selon le type
     let mesh;
     if (type === "magnet") {
       mesh = BABYLON.MeshBuilder.CreateBox(
@@ -67,16 +87,15 @@ export class PowerUpManager {
         this.scene,
       );
     }
-
     mesh.position.set(lane, 2.0, z + (Math.random() - 0.5) * 8);
     mesh.material = this.mats[type];
     this.spawned.push({ mesh, type });
   }
 
-  // Appelé à chaque frame
   update(speed, player, game) {
     const pPos = player.getPosition();
 
+<<<<<<< HEAD
     // Déplacer les power-ups
     this.spawned.forEach((pu) => {
       pu.mesh.position.z -= speed;
@@ -86,13 +105,21 @@ export class PowerUpManager {
 
     // Détecter la collecte
     this.spawned = this.spawned.filter((pu) => {
+=======
+    this.spawned.forEach(pu => {
+      pu.mesh.position.z -= speed;
+      pu.mesh.rotation.y += 0.04;
+      pu.mesh.position.y  = 2.0 + Math.sin(Date.now() * 0.003) * 0.15;
+    });
+
+    this.spawned = this.spawned.filter(pu => {
+>>>>>>> c40e69e (walk on trains feature)
       const dist = BABYLON.Vector3.Distance(pPos, pu.mesh.position);
       if (dist < 1.2) {
         this._activate(pu.type, game);
         pu.mesh.dispose();
         return false;
       }
-      // Supprimer si trop loin derrière
       if (pu.mesh.position.z < -20) {
         pu.mesh.dispose();
         return false;
@@ -100,7 +127,6 @@ export class PowerUpManager {
       return true;
     });
 
-    // Effet aimant : attirer les pièces proches
     if (this.active.magnet) {
       game.tileManager.tiles.forEach((tile) => {
         tile.coins.forEach((coin) => {
@@ -112,19 +138,59 @@ export class PowerUpManager {
         });
       });
     }
+
+    // Mettre à jour l'affichage HUD des powerups actifs
+    this._updateHUD();
   }
 
   _activate(type, game) {
-    // Annuler le timer précédent si déjà actif
+    const wasActive = this.active[type];
+
+    // Annuler le timer existant pour ce type (recharge la durée)
     if (this.timers[type]) clearTimeout(this.timers[type]);
 
     this.active[type] = true;
-    game.onPowerUpStart(type);
+    this._game = game; // garder la référence pour _updateHUD
+
+    // Effets visuels au démarrage (seulement si pas déjà actif)
+    if (!wasActive) {
+      if (type === 'shield') {
+        game.player.mesh.material.emissiveColor = new BABYLON.Color3(0.0, 0.5, 1.0);
+      }
+      if (type === 'speed') {
+        game.speed *= 2;
+        game.scene.clearColor = new BABYLON.Color4(0.15, 0.0, 0.3, 1);
+      }
+    }
 
     this.timers[type] = setTimeout(() => {
       this.active[type] = false;
-      game.onPowerUpEnd(type);
+      delete this.timers[type];
+
+      // Effets visuels à la fin
+      if (type === 'shield') {
+        game.player.mesh.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
+      }
+      if (type === 'speed') {
+        game.speed = game.constructor.INITIAL_SPEED;
+        game.scene.clearColor = new BABYLON.Color4(0.02, 0.02, 0.05, 1);
+      }
+
+      this._updateHUD();
     }, PowerUpManager.DURATION[type]);
+  }
+
+  // Affiche tous les powerups actifs simultanément
+  _updateHUD() {
+    const icons = { magnet: '🧲', shield: '🛡️', speed: '⚡' };
+    const actives = PowerUpManager.TYPES.filter(t => this.active[t]);
+    const display = document.getElementById('powerupDisplay');
+    if (actives.length > 0) {
+      display.textContent = actives.map(t => icons[t]).join(' ');
+      display.style.opacity = '1';
+    } else {
+      display.style.opacity = '0';
+    }
   }
 
   isActive(type) {
@@ -132,11 +198,21 @@ export class PowerUpManager {
   }
 
   reset() {
+<<<<<<< HEAD
     this.spawned.forEach((pu) => pu.mesh.dispose());
     this.spawned = {};
     this.spawned = [];
     this.active = {};
     for (const t of this.timers) clearTimeout(t);
     this.timers = {};
+=======
+    this.spawned.forEach(pu => pu.mesh.dispose());
+    this.spawned = [];
+    this.active  = { magnet: false, shield: false, speed: false };
+    for (const timerId of Object.values(this.timers)) clearTimeout(timerId);
+    this.timers  = {};
+    const display = document.getElementById('powerupDisplay');
+    if (display) display.style.opacity = '0';
+>>>>>>> c40e69e (walk on trains feature)
   }
 }

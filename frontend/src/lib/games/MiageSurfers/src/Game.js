@@ -107,10 +107,26 @@ export class Game {
       // Mettre à jour les systèmes
       this.tileManager.update(this.speed, this.score);
       this.powerUpManager.update(this.speed, this.player, this);
+<<<<<<< HEAD
       this.tileManager.checkCoins(this.player, (count) => {
         this.score += count * 50;
       });
+=======
+      this.tileManager.checkCoins(this.player, (count) => { this.score += count * 50; });
+
+      // IMPORTANT : Mettre à jour groundY AVANT player.update() pour que la gravité utilise la bonne hauteur
+      this.player.groundY = this.tileManager.getGroundYUnderPlayer(this.player);
+>>>>>>> c40e69e (walk on trains feature)
       this.player.update(this.input);
+
+      // Caméra suit la hauteur du joueur
+      // Caméra suit la hauteur du joueur en douceur
+      const targetCamY = 6 + Math.max(0, this.player.groundY - 1.25);
+      this.camera.position.y = BABYLON.Scalar.Lerp(
+        this.camera.position.y,
+        targetCamY,
+        0.08
+      );
 
       // Incrémenter le score
       this.score += Math.round(this.speed * 10);
@@ -129,12 +145,15 @@ export class Game {
       if (this.powerUpManager.isActive("speed")) {
         this.speed = Math.min(this.speed, Game.INITIAL_SPEED * 2.5);
       }
+<<<<<<< HEAD
 
       // Trouve la tuile la plus proche sous le joueur
       const tile = this.tileManager.getTileUnderPlayer(this.player);
       if (tile) {
         this.player.groundY = tile.ground.metadata.groundY;
       }
+=======
+>>>>>>> c40e69e (walk on trains feature)
     }
 
     this.scene.render();

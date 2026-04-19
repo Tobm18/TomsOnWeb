@@ -31,6 +31,7 @@ export class Player {
     this._createMesh();
   }
 
+<<<<<<< HEAD
   _createMesh() {
     // Capsule simple pour représenter le joueur
     this.mesh = BABYLON.MeshBuilder.CreateCapsule(
@@ -45,6 +46,20 @@ export class Player {
     mat.diffuseColor = new BABYLON.Color3(0.2, 0.6, 1.0);
     this.mesh.material = mat;
   }
+=======
+ _createMesh() {
+  this.mesh = BABYLON.MeshBuilder.CreateCapsule(
+    'player',
+    { radius: 0.4, height: 1.5 },
+    this.scene
+  );
+  this.mesh.position.set(0, 1.25 + 0.75, 0); // 2.0 = sol + demi-capsule
+
+  const mat = new BABYLON.StandardMaterial('playerMat', this.scene);
+  mat.diffuseColor = new BABYLON.Color3(0.2, 0.6, 1.0);
+  this.mesh.material = mat;
+}
+>>>>>>> c40e69e (walk on trains feature)
 
   /**
    * Appelé à chaque frame par Game.update()
@@ -75,6 +90,7 @@ export class Player {
 
   _handleJump(input) {
     if (this.jumpsLeft > 0 && input.consumeJump()) {
+<<<<<<< HEAD
       this.velocityY = Player.JUMP_FORCE;
       this.isOnGround = false;
       this.jumpsLeft--;
@@ -116,12 +132,57 @@ export class Player {
         this.jumpsLeft = 2;
       }
     }
+=======
+        this.velocityY  = Player.JUMP_FORCE;
+        this.isOnGround = false;
+        this.jumpsLeft--;
+    }
+}
+
+_handleSlide(input) {
+  if (input.slidePressed && this.isOnGround && !this.isSliding) {
+    this.isSliding  = true;
+    this.slideTimer = 40;
+    this.mesh.scaling.y = 0.5;
+    this.mesh.position.y = this.groundY + 0.4; // aplati = centre plus bas
+  }
+  if (this.isSliding) {
+    this.slideTimer--;
+    if (this.slideTimer <= 0) {
+      this.isSliding      = false;
+      this.mesh.scaling.y = 1;
+    }
+  }
+}
+
+  _applyMovement() {
+  this.mesh.position.x = BABYLON.Scalar.Lerp(
+    this.mesh.position.x,
+    this.targetX,
+    Player.LANE_SPEED
+  );
+
+  this.velocityY       += Player.GRAVITY;
+  this.mesh.position.y += this.velocityY;
+
+  // Le centre de la capsule doit être à groundY + demi-hauteur (0.75)
+  const feetY = this.groundY + 0.75;
+
+  if (this.mesh.position.y <= feetY) {
+    this.mesh.position.y = feetY;
+    this.velocityY       = 0;
+    this.isOnGround      = true;
+    this.jumpsLeft       = 2;
+  } else {
+    this.isOnGround = false;
+>>>>>>> c40e69e (walk on trains feature)
   }
 
   /**
    * Remet le joueur à sa position de départ
    */
   reset() {
+<<<<<<< HEAD
     this.laneIndex = 1;
     this.targetX = 0;
     this.velocityY = 0;
@@ -132,6 +193,18 @@ export class Player {
     this.isSliding = false;
     this.mesh.scaling.y = 1;
   }
+=======
+  this.laneIndex  = 1;
+  this.targetX    = 0;
+  this.velocityY  = 0;
+  this.isOnGround = true;
+  this.mesh.position.set(0, 1.25 + 0.75, 0); // 2.0 = sol + demi-capsule
+  this.jumpsLeft  = 2;
+  this.groundY    = 1.25;
+  this.isSliding  = false;
+  this.mesh.scaling.y = 1;
+}
+>>>>>>> c40e69e (walk on trains feature)
 
   /**
    * Retourne la position actuelle (utilisé pour les collisions)
